@@ -124,11 +124,13 @@ public class GestorFichero {
             flujo.write("NOMBRE EMPLEADO, DNI/PASAPORTE, PUESTO, FECHA DE TOMA DE POSESION, FECHA DE CESE, TELEFONO, EVALUADOR, COORDINADOR");
             //salto de linea
             flujo.newLine();
-            
+
             for (Empleado emple : lista) {
 
                 //si llevan mas de 20 años trabajando
-                if ((ChronoUnit.YEARS.between(emple.getFecTomaPosesion(), LocalDate.now())) > 20) {
+                //hay que tener en cuenta que la fecha de cese debe ser posterior a la actual
+                if (((ChronoUnit.YEARS.between(emple.getFecTomaPosesion(), LocalDate.now())) > 20)
+                        && (fechaCeseValida(emple.getFecCese()))) {
 
                     //usamos el metodo write para escribir en el buffer
                     flujo.write(emple.toString());
@@ -147,6 +149,14 @@ public class GestorFichero {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    private static boolean fechaCeseValida(LocalDate fecCese) {
+        if (fecCese == null) {
+            return true;
+        } else {
+            return fecCese.isAfter(LocalDate.now());
+        }
     }
 
 }
