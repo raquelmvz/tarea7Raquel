@@ -7,14 +7,12 @@ package tarea7Raquel;
 
 import java.time.LocalDate;
 
-
-
 /**
  *
  * @author raquel
  */
 public class Empleado {
-    
+
     private String nombre;
     private String dni;
     private String puesto;
@@ -23,9 +21,8 @@ public class Empleado {
     private String telefono;
     private boolean esEvaluador;
     private boolean esCoordinador;
-    
-    /* Getters y setters */
 
+    /* Getters y setters */
     public String getNombre() {
         return nombre;
     }
@@ -89,13 +86,11 @@ public class Empleado {
     public void setEsCoordinador(boolean esCoordinador) {
         this.esCoordinador = esCoordinador;
     }
-    
-    /* to string */
 
+    /* to string */
     @Override
     public String toString() {
-        return "Empleado{" + "nombre=" + nombre + ", dni=" + dni + ", puesto=" + puesto + ", fecTomaPosesion=" + fecTomaPosesion + ", fecCese=" + fecCese + ", telefono=" + telefono + ", esEvaluador=" + esEvaluador + ", esCoordinador=" + esCoordinador + '}';
+        return nombre + "," + dni + "," + puesto + "," + fecTomaPosesion + "," + fecCese + "," + telefono + "," + esEvaluador + "," + esCoordinador;
     }
-    
-    
+
 }

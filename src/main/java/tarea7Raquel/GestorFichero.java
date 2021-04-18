@@ -25,10 +25,7 @@ public class GestorFichero {
         /* Lectura del fichero */
         String idFichero = "RelPerCen.csv";
 
-        //para guardar los datos que se van leyendo
-//        String[] tokens;
-//        String linea;
-//        ArrayList<Empleado> empleados = new ArrayList<>();
+        //aqui se ejecuta el metodo de lectura del fichero
         leeFichero(idFichero);
     }
 
@@ -56,15 +53,15 @@ public class GestorFichero {
 
                 Empleado tmp = new Empleado();
 
-                tmp.setNombre(tokens[0] + tokens[1]);
-                tmp.setDni(tokens[2].substring(1, tokens[2].length() - 1));
-                tmp.setPuesto(tokens[3].substring(1, tokens[3].length() - 1));
+                tmp.setNombre(formateaTexto(tokens[0] + tokens[1]));
+                tmp.setDni(formateaTexto(tokens[2]));
+                tmp.setPuesto(formateaTexto(tokens[3]));
                 //para la fecha hay que tener en cuenta el formato en el que aparece
-                //en en fichero --> dd/MM/yyyy
+                //en el fichero --> dd/MM/yyyy
                 //ademas hay que quitarle las comillas "" 
-                tmp.setFecTomaPosesion(conversionFecha(tokens[4].substring(1, tokens[4].length() - 1)));
-                tmp.setFecCese(conversionFecha(tokens[5].substring(1, tokens[5].length() - 1)));
-                tmp.setTelefono(tokens[6].substring(1, tokens[6].length() - 1));
+                tmp.setFecTomaPosesion(conversionFecha(formateaTexto(tokens[4])));
+                tmp.setFecCese(conversionFecha(formateaTexto(tokens[5])));
+                tmp.setTelefono(formateaTexto(tokens[6]));
                 //si en el token pone que no es --> set esevaluador a false
                 tmp.setEsEvaluador(!tokens[7].equalsIgnoreCase("No"));
                 //si en el token pone que no es --> set escoordinador a false
@@ -79,13 +76,14 @@ public class GestorFichero {
             System.out.println(ex.getMessage());
         }
 
+        System.out.println("----LECTURA DEL FICHERO----");
         for (Empleado em : empleados) {
             System.out.println(em);
         }
 
     }
 
-    public static LocalDate conversionFecha(String fecha) {
+    private static LocalDate conversionFecha(String fecha) {
 
         //hay empleados sin fecha de cese y salta una excepcion
         if (fecha.equals("")) {
@@ -94,6 +92,12 @@ public class GestorFichero {
             return LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }
 
+    }
+
+    //metodo para quitar las comillas a todos los datos que
+    //se recogen en el fichero
+    private static String formateaTexto(String texto) {
+        return texto.substring(1, texto.length() - 1);
     }
 
 }
