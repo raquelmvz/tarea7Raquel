@@ -121,6 +121,10 @@ public class GestorFichero {
         // y se encarga de cerrar el recurso "flujo" una vez finalizadas las operaciones
         try (BufferedWriter flujo = new BufferedWriter(new FileWriter(fichero))) {
 
+            flujo.write("NOMBRE EMPLEADO, DNI/PASAPORTE, PUESTO, FECHA DE TOMA DE POSESION, FECHA DE CESE, TELEFONO, EVALUADOR, COORDINADOR");
+            //salto de linea
+            flujo.newLine();
+            
             for (Empleado emple : lista) {
 
                 //si llevan mas de 20 años trabajando
@@ -136,6 +140,7 @@ public class GestorFichero {
             }
             //flush para guardar cambios
             flujo.flush();
+            System.out.println("----ESCRITURA DE FICHERO----");
             System.out.println("El fichero se ha creado");
 
         } catch (IOException e) {
