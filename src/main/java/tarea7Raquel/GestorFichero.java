@@ -6,12 +6,15 @@
 package tarea7Raquel;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 /**
@@ -25,12 +28,21 @@ public class GestorFichero {
         /* Lectura del fichero */
         String idFichero = "RelPerCen.csv";
 
+        //lista de donde leer los objetos
+        ArrayList<Empleado> lista;
+
         //aqui se ejecuta el metodo de lectura del fichero
-        leeFichero(idFichero);
+        lista = leeFichero(idFichero);
+
+        /* escritura de fichero */
+        String idFichero2 = "ListaEmpleados.csv";
+
+        escribeFichero(idFichero2, lista);
+
     }
 
     /* Metodo que lee el fichero */
-    public static void leeFichero(String fichero) {
+    public static ArrayList<Empleado> leeFichero(String fichero) {
 
         //para guardar los datos que se van leyendo
         String[] tokens;
@@ -81,6 +93,8 @@ public class GestorFichero {
             System.out.println(em);
         }
 
+        return empleados;
+
     }
 
     private static LocalDate conversionFecha(String fecha) {
@@ -98,6 +112,36 @@ public class GestorFichero {
     //se recogen en el fichero
     private static String formateaTexto(String texto) {
         return texto.substring(1, texto.length() - 1);
+    }
+
+    /* Metodo que escribe un fichero */
+    public static void escribeFichero(String fichero, ArrayList<Empleado> lista) {
+
+        // Estructura try-with-resources. Instancia el objeto con el fichero a escribir
+        // y se encarga de cerrar el recurso "flujo" una vez finalizadas las operaciones
+        try (BufferedWriter flujo = new BufferedWriter(new FileWriter(fichero))) {
+
+            for (Empleado emple : lista) {
+
+                //si llevan mas de 20 años trabajando
+                if ((ChronoUnit.YEARS.between(emple.getFecTomaPosesion(), LocalDate.now())) > 20) {
+
+                    //usamos el metodo write para escribir en el buffer
+                    flujo.write(emple.toString());
+                    //salto de linea
+                    flujo.newLine();
+
+                }
+
+            }
+            //flush para guardar cambios
+            flujo.flush();
+            System.out.println("El fichero se ha creado");
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
 }
