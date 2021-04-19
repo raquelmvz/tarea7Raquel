@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class Empleado {
 
     private String nombre;
+    
     private String dni;
     private String puesto;
     private LocalDate fecTomaPosesion;

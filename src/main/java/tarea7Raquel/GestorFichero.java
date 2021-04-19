@@ -31,6 +31,13 @@ public class GestorFichero {
         String idFichero2 = "ListaEmpleados.csv"; //fichero donde escribir
         escribeFichero(idFichero2, lista); //aqui se ejecuta el metodo de escritura
 
+        /* AMPLIACION */
+        System.out.println("\n\n--AMPLIACION----\n"
+                + "Numero de profesores de informatica");
+        System.out.println(contadorProfesoresInfo(lista));
+        System.out.println("--------------------");
+        profesorBioCoordinador(lista);
+
     }
 
     /* Metodo que lee el fichero */
@@ -119,7 +126,7 @@ public class GestorFichero {
                 /* si llevan mas de 20 años trabajando
                 hay que tener en cuenta que la fecha de cese debe ser posterior a la actual */
                 if (((ChronoUnit.YEARS.between(emple.getFecTomaPosesion(), LocalDate.now())) > 20)
-                        && (fechaCeseValida(emple.getFecCese()))) {
+                        && (emple.getFecCese() == null)) {
 
                     flujo.write(emple.toString()); //usamos el metodo write para escribir en el buffer
                     flujo.newLine();  //salto de linea
@@ -137,15 +144,55 @@ public class GestorFichero {
 
     }
 
+    /* AMPLIACION */
+ /* Contar el num de profesores de informatica */
+    public static int contadorProfesoresInfo(ArrayList<Empleado> lista) {
+
+        ArrayList<Empleado> profesInformatica = new ArrayList<>();
+
+        for (Empleado emple : lista) {
+            if (emple.getPuesto().contains("Informática")) {
+                profesInformatica.add(emple);
+            }
+        }
+
+        return profesInformatica.size();
+
+    }
+
+    /* Para saber si algun profesor de biologia es coordinador */
+    public static void profesorBioCoordinador(ArrayList<Empleado> lista) {
+
+        ArrayList<String> profesBioCoord = new ArrayList<>();
+
+        for (Empleado emple : lista) {
+            if (emple.getPuesto().contains("Biología")
+                    && (emple.isEsCoordinador())) {
+                profesBioCoord.add(emple.getNombre() + " | " + emple.getDni());
+            }
+        }
+
+        System.out.println("LISTA DE PROFESORES DE BIOLOGIA COORDINADORES:");
+        profesBioCoord.forEach(System.out::println);
+
+    }
+    
+    /* Lista ordenada alfabeticamente con los apellidos de los empleados cuyo 
+    NIF contenga la letra N */
+    public static void listaEmpleadosSeleccionadosOrdenada(String letraDNI) {
+        
+        
+    }
+
+    //fecha de cese es null !!!
     /* para controlar que los empleados lleven mas de 20 años trabajando
     si la fecha de cese no existe es que siguen trabajando
     si la fecha de cese es anterior a la de hoy no sirve */
-    private static boolean fechaCeseValida(LocalDate fecCese) {
-        if (fecCese == null) {
-            return true;
-        } else {
-            return fecCese.isAfter(LocalDate.now());
-        }
-    }
-
+//    private static boolean fechaCeseValida(LocalDate fecCese) {
+//        if (fecCese == null) {
+//            return true;
+//        } else {
+//            return fecCese.isAfter(LocalDate.now());
+//        }
+//    }
 }
