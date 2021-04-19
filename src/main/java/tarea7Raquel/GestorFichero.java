@@ -17,6 +17,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -42,6 +45,9 @@ public class GestorFichero {
         listaEmpleadosSeleccionadosOrdenada(lista, "N");
         System.out.println("--------------------");
         verificarNombreProfesor(lista, "John");
+        System.out.println("--------------------");
+        System.out.println("---------API STREAM---------");
+        profesoresInformaticaAPI(lista);
 
     }
 
@@ -216,6 +222,16 @@ public class GestorFichero {
 
         System.out.println("Hay " + nombres.size() + " empleados que se llamen " + nombre);
 
+    }
+
+    /* AMPLIACION CON API */
+ /* Contar el num de profesores de informatica */
+    private static void profesoresInformaticaAPI(ArrayList<Empleado> lista) {
+        List<Empleado> profesores = lista.stream().filter(p -> p.getPuesto().contains("Informática"))
+                .collect(Collectors.toList());
+
+        System.out.println("PROFESORES DE INFORMATICA (CON API STREAM)");
+        profesores.forEach(System.out::println);
     }
 
     //fecha de cese es null !!!
