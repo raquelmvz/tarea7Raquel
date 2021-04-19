@@ -48,6 +48,8 @@ public class GestorFichero {
         System.out.println("--------------------");
         System.out.println("---------API STREAM---------");
         profesoresInformaticaAPI(lista);
+        System.out.println("--------------------");
+        profesoresBiologiaAPI(lista);
 
     }
 
@@ -231,6 +233,16 @@ public class GestorFichero {
                 .collect(Collectors.toList());
 
         System.out.println("PROFESORES DE INFORMATICA (CON API STREAM)");
+        profesores.forEach(System.out::println);
+    }
+
+    /* Para saber si algun profesor de biologia es coordinador */
+    private static void profesoresBiologiaAPI(ArrayList<Empleado> lista) {
+        List<Empleado> profesores = lista.stream().filter(p -> p.getPuesto().contains("Biología")
+                && p.isEsCoordinador())
+                .collect(Collectors.toList());
+
+        System.out.println("PROFESORES DE BIOLOGIA COORDINADORES (CON API STREAM)");
         profesores.forEach(System.out::println);
     }
 
