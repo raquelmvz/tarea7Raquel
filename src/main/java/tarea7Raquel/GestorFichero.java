@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -37,6 +38,10 @@ public class GestorFichero {
         System.out.println(contadorProfesoresInfo(lista));
         System.out.println("--------------------");
         profesorBioCoordinador(lista);
+        System.out.println("--------------------");
+        listaEmpleadosSeleccionadosOrdenada(lista, "N");
+        System.out.println("--------------------");
+        verificarNombreProfesor(lista, "John");
 
     }
 
@@ -61,7 +66,8 @@ public class GestorFichero {
 
                 Empleado tmp = new Empleado();
 
-                tmp.setNombre(formateaTexto(tokens[0] + tokens[1]));
+                tmp.setApellidos(tokens[0].substring(1, tokens[0].length()));
+                tmp.setNombre(tokens[1].substring(1, tokens[1].length() - 1));
                 tmp.setDni(formateaTexto(tokens[2]));
                 tmp.setPuesto(formateaTexto(tokens[3]));
                 /*para la fecha hay que tener en cuenta el formato en el que aparece
@@ -118,7 +124,7 @@ public class GestorFichero {
         y se encarga de cerrar el recurso "flujo" una vez finalizadas las operaciones */
         try (BufferedWriter flujo = new BufferedWriter(new FileWriter(fichero))) {
 
-            flujo.write("NOMBRE EMPLEADO, DNI/PASAPORTE, PUESTO, FECHA DE TOMA DE POSESION, FECHA DE CESE, TELEFONO, EVALUADOR, COORDINADOR");
+            flujo.write("NOMBRE EMPLEADO, APELLIDOS EMPLEADO, DNI/PASAPORTE, PUESTO, FECHA DE TOMA DE POSESION, FECHA DE CESE, TELEFONO, EVALUADOR, COORDINADOR");
             flujo.newLine(); //salto de linea
 
             for (Empleado emple : lista) {
@@ -168,7 +174,7 @@ public class GestorFichero {
         for (Empleado emple : lista) {
             if (emple.getPuesto().contains("Biología")
                     && (emple.isEsCoordinador())) {
-                profesBioCoord.add(emple.getNombre() + " | " + emple.getDni());
+                profesBioCoord.add(emple.getNombre() + " " + emple.getApellidos() + " | " + emple.getDni());
             }
         }
 
@@ -176,12 +182,40 @@ public class GestorFichero {
         profesBioCoord.forEach(System.out::println);
 
     }
-    
+
     /* Lista ordenada alfabeticamente con los apellidos de los empleados cuyo 
     NIF contenga la letra N */
-    public static void listaEmpleadosSeleccionadosOrdenada(String letraDNI) {
-        
-        
+    public static void listaEmpleadosSeleccionadosOrdenada(ArrayList<Empleado> lista, String letraDNI) {
+
+        ArrayList<String> apellidos = new ArrayList<>();
+
+        for (Empleado emple : lista) {
+            if (emple.getDni().contains(letraDNI)) {
+                apellidos.add(emple.getApellidos() + " | " + emple.getDni());
+            }
+        }
+
+        Collections.sort(apellidos);
+
+        System.out.println("LISTA APELLIDOS ORDENADOS ALFABETICAMENTE CUYO DNI CONTIENE"
+                + " LA LETRA " + letraDNI);
+        apellidos.forEach(System.out::println);
+
+    }
+
+    /* Verificar que ningun profesor se llama John */
+    public static void verificarNombreProfesor(ArrayList<Empleado> lista, String nombre) {
+
+        ArrayList<String> nombres = new ArrayList<>();
+
+        for (Empleado emple : lista) {
+            if (emple.getNombre().contains(nombre)) {
+                nombres.add(nombre);
+            }
+        }
+
+        System.out.println("Hay " + nombres.size() + " empleados que se llamen " + nombre);
+
     }
 
     //fecha de cese es null !!!

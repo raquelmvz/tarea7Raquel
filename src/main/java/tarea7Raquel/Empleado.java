@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class Empleado {
 
     private String nombre;
-    
+    private String apellidos;
     private String dni;
     private String puesto;
     private LocalDate fecTomaPosesion;
@@ -30,6 +30,14 @@ public class Empleado {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public String getDni() {
@@ -91,7 +99,7 @@ public class Empleado {
     /* to string */
     @Override
     public String toString() {
-        return nombre + "," + dni + "," + puesto + "," + fecTomaPosesion + "," + fecCese + "," + telefono + "," + esEvaluador + "," + esCoordinador;
+        return nombre + "," + apellidos + "," + dni + "," + puesto + "," + fecTomaPosesion + "," + fecCese + "," + telefono + "," + esEvaluador + "," + esCoordinador;
     }
 
 }
