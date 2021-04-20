@@ -233,43 +233,65 @@ public class GestorFichero {
     /* AMPLIACION CON API */
  /* Contar el num de profesores de informatica */
     private static void profesoresInformaticaAPI(ArrayList<Empleado> lista) {
-        List<Empleado> profesores = lista.stream().filter(p -> p.getPuesto().contains("Informática"))
-                .collect(Collectors.toList());
+        //en lugar de una lista directamente almaceno el resultado aqui
+        long cantidadProfesores = lista.stream() //esta lista stream contiene lo 
+                //que haya en la lista completa de profesores
+                //al aplicar filter: el stream queda solo con los prof que cumplan la 
+                //condicion del filter
+                //ese stream solo tendra x resultados -- los que sean
+                //de informatica
+                .filter(p -> p.getPuesto().contains("Informática"))
+                //en lugar de convertir a una lista directamente cuento aqui
+                .count();
 
-        System.out.println("PROFESORES DE INFORMATICA (CON API STREAM)");
-        profesores.forEach(System.out::println);
+        System.out.println("NUMERO DE PROFESORES DE INFORMATICA (CON API STREAM): " + cantidadProfesores);
+
     }
 
     /* Para saber si algun profesor de biologia es coordinador */
     private static void profesoresBiologiaAPI(ArrayList<Empleado> lista) {
-        List<Empleado> profesores = lista.stream().filter(p -> p.getPuesto().contains("Biología")
-                && p.isEsCoordinador())
-                .collect(Collectors.toList());
+        /*long cantidadProfesBioCoord = lista.stream().filter(p -> (p.getPuesto().contains("Biología")
+                && p.isEsCoordinador()))
+                .count(); //cuantos casos hay*/
 
-        System.out.println("PROFESORES DE BIOLOGIA COORDINADORES (CON API STREAM)");
-        profesores.forEach(System.out::println);
+        //esto devuelve un boolean con la respuesta
+        //de si hay o no
+        boolean hayProfesores = lista.stream().anyMatch(p -> (p.getPuesto().contains("Biología")
+                && p.isEsCoordinador()));
+
+        System.out.println("¿Existen profesores de biologia"
+                + " que sean coordinadores? --> " + hayProfesores);
+
     }
 
     /* Lista ordenada alfabeticamente con los apellidos de los empleados cuyo 
     NIF contenga la letra N */
     private static void apellidosEmpleadosAPI(ArrayList<Empleado> lista) {
-        List<Empleado> apellidos = lista.stream().filter(p -> p.getDni().contains("N"))
-                .sorted((p1, p2) -> p1.getApellidos().compareTo(p2.getApellidos()))
-                .collect(Collectors.toList());
+        List<String> apellidos = lista.stream()
+                .filter(p -> p.getDni().contains("N"))
+                .map(p -> p.getApellidos())//cojo el objeto pojo
+                //y obtengo un string con el apellido
+                //tenemos un stream de string con los apellidos
+                .sorted()//se esta ordenando segun el orden natural
+                //podemos en otro caso poner un criterio personalizado 
+                //en los parentesis
+                .collect(Collectors.toList());//nos guarda el string en una lista
 
         System.out.println("LISTA ORDENADA DE APELLIDOS (CON API STREAM)");
-        for (Empleado emple : apellidos) {
-            System.out.println(emple.getApellidos());
-        }
+        apellidos.forEach(System.out::println);
     }
 
     /* Verificar que ningun profesor se llama John */
     private static void verificarJohnAPI(ArrayList<Empleado> lista) {
-        List<Empleado> empleados = lista.stream().filter(p -> p.getNombre().contains("John"))
-                .collect(Collectors.toList());
+        boolean esJohn = lista.stream()
+                .noneMatch(p -> p.getNombre().contains("John"));
 
-        System.out.println("Hay " + empleados.size() + " empleados que se llaman John");
+        //nonematch verifica que NO se cumple la condicion
+        System.out.println("Ningun profesor se llama John -- " + esJohn);
+        //System.out.println("Hay " + empleados.size() + " empleados que se llaman John");
     }
+    
+    /*  */
 
     //fecha de cese es null !!!
     /* para controlar que los empleados lleven mas de 20 años trabajando
