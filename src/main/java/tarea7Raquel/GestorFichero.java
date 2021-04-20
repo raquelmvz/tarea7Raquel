@@ -290,8 +290,29 @@ public class GestorFichero {
         System.out.println("Ningun profesor se llama John -- " + esJohn);
         //System.out.println("Hay " + empleados.size() + " empleados que se llaman John");
     }
-    
-    /*  */
+
+    /* Obtener una lista de todas las fechas de cese
+    que hay (usando API stream)*/
+    public static List<LocalDate> listaFechasCese(ArrayList<Empleado> lista) {
+
+        List<LocalDate> fechas = lista.stream()
+                .map(p -> p.getFecCese())
+                .filter(p -> p != null)//las fechas que no sean nulas
+                .collect(Collectors.toList());
+
+        return fechas;
+    }
+
+    /* quien se jubila mañana -- apellidos */
+    public static List<String> empleadosQueSeJubilan(ArrayList<Empleado> lista, LocalDate fechaJubilacion) {
+
+        List<String> apellidos = lista.stream()
+                .filter(p -> p.getFecCese().equals(fechaJubilacion))
+                .map(p -> p.getApellidos())
+                .collect(Collectors.toList());
+
+        return apellidos;
+    }
 
     //fecha de cese es null !!!
     /* para controlar que los empleados lleven mas de 20 años trabajando
