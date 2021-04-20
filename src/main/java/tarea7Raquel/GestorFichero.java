@@ -50,6 +50,10 @@ public class GestorFichero {
         profesoresInformaticaAPI(lista);
         System.out.println("--------------------");
         profesoresBiologiaAPI(lista);
+        System.out.println("--------------------");
+        apellidosEmpleadosAPI(lista);
+        System.out.println("--------------------");
+        verificarJohnAPI(lista);
 
     }
 
@@ -63,7 +67,7 @@ public class GestorFichero {
 
         /*Instanciación de BufferedReader a partir de un objeto InputStreamReader
         InputStreamReader permite indicar el tipo de codificación del archivo */
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fichero), "ISO-8859-1"))) {
+        try ( BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fichero), "ISO-8859-1"))) {
 
             br.readLine(); //elimino la primera linea (cabecera)
 
@@ -130,7 +134,7 @@ public class GestorFichero {
 
         /* Estructura try-with-resources. Instancia el objeto con el fichero a escribir
         y se encarga de cerrar el recurso "flujo" una vez finalizadas las operaciones */
-        try (BufferedWriter flujo = new BufferedWriter(new FileWriter(fichero))) {
+        try ( BufferedWriter flujo = new BufferedWriter(new FileWriter(fichero))) {
 
             flujo.write("NOMBRE EMPLEADO, APELLIDOS EMPLEADO, DNI/PASAPORTE, PUESTO, FECHA DE TOMA DE POSESION, FECHA DE CESE, TELEFONO, EVALUADOR, COORDINADOR");
             flujo.newLine(); //salto de linea
@@ -244,6 +248,27 @@ public class GestorFichero {
 
         System.out.println("PROFESORES DE BIOLOGIA COORDINADORES (CON API STREAM)");
         profesores.forEach(System.out::println);
+    }
+
+    /* Lista ordenada alfabeticamente con los apellidos de los empleados cuyo 
+    NIF contenga la letra N */
+    private static void apellidosEmpleadosAPI(ArrayList<Empleado> lista) {
+        List<Empleado> apellidos = lista.stream().filter(p -> p.getDni().contains("N"))
+                .sorted((p1, p2) -> p1.getApellidos().compareTo(p2.getApellidos()))
+                .collect(Collectors.toList());
+
+        System.out.println("LISTA ORDENADA DE APELLIDOS (CON API STREAM)");
+        for (Empleado emple : apellidos) {
+            System.out.println(emple.getApellidos());
+        }
+    }
+
+    /* Verificar que ningun profesor se llama John */
+    private static void verificarJohnAPI(ArrayList<Empleado> lista) {
+        List<Empleado> empleados = lista.stream().filter(p -> p.getNombre().contains("John"))
+                .collect(Collectors.toList());
+
+        System.out.println("Hay " + empleados.size() + " empleados que se llaman John");
     }
 
     //fecha de cese es null !!!
